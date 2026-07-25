@@ -24,7 +24,7 @@ CONSTANTS
 
 //Discriminator model
 # define DISC_HIDDEN1_NEURONS 256
-# define DISC_HIDDE21_NEURONS 128
+# define DISC_HIDDEN2_NEURONS 128
 # define DISC_OUTPUT_NEURONS 1
 
 //Generative model
@@ -42,6 +42,12 @@ CONSTANTS
 /*
 STRUCTURES
 */
+
+typedef enum s_method
+{
+    HE,
+    GLOROT,
+}					t_method;
 
 typedef struct s_image
 {
@@ -82,14 +88,26 @@ FUNCTIONS
 
 //init.c
 int    init(t_gen *generator, t_disc *discriminator);
-int    init_discriminator(t_disc *discriminator);
-int    init_generator(t_gen *generator);
-int     init_layer(t_layer *layer);
+
+//init_layer.c
+int    init_layer(t_layer *layer, const t_method method);
+
+//init_weights.c
+void    init_weights_He(t_layer *layer);
+void    init_weights_Glorot(t_layer *layer);
 
 //free_layer_utils.c
 void    free_weights(t_layer *layer);
 void    free_weights_gradients(t_layer *layer);
 void    free_biases(t_layer *layer);
 void    free_biases_gradients(t_layer *layer);
+void    free_weights_error(t_layer *layer, int input_index);
+void    free_weights_gradients_error(t_layer *layer, int input_index);
+
+//free.c
+void    free_layer(t_layer *layer);
+void    free_generator(t_gen *generator);
+void    free_discriminator(t_disc *discriminator);
+void    free_all(t_gen *generator, t_disc *discriminator);
 
 #endif

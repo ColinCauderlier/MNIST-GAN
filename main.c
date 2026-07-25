@@ -7,6 +7,9 @@ int main()
     t_disc  discriminator;
 
     init(&generator, &discriminator);
+
     
+
+    free_all(&generator, &discriminator);
     return (0);
 }

@@ -1,49 +1,5 @@
 #include "gan.h"
 
-/*
-Entirely frees the weights of a layer
-*/
-void    free_weights(t_layer *layer)
-{
-    int input = 0;
-    int output;
-
-    while (input < layer->input_size)
-    {
-        free(layer->weights[input]);
-        input++;
-    }
-    free(layer->weights);
-}
-
-void    free_weights_gradients(t_layer *layer)
-{
-    int input = 0;
-    int output;
-
-    while (input < layer->input_size)
-    {
-        free(layer->weights_grad[input]);
-        input++;
-    }
-    free(layer->weights_grad);
-}
-
-
-/*
-Fully initialize a layer of neurons, freeing everything and returning -1 if a problem occurs
-*/
-int     init_layer(t_layer *layer)
-{
-    layer->weights = malloc(layer->input_size * sizeof(int*));
-    if (!layer->weights)
-        return (-1);
-
-
-
-    return (0);
-}
-
 static void    init_generator_sizes(t_gen *generator)
 {
     generator->hidden1_layer.input_size = GEN_NOISE_INPUT;
@@ -54,16 +10,31 @@ static void    init_generator_sizes(t_gen *generator)
     generator->output_layer.output_size = GEN_OUTPUT_NEURONS;
 }
 
-int     init_generator(t_gen *generator)
+static void    init_discriminator_sizes(t_disc *discriminator)
+{
+    discriminator->hidden1_layer.input_size = IMAGE_SIZE;
+    discriminator->hidden1_layer.output_size = DISC_HIDDEN1_NEURONS;
+    discriminator->hidden2_layer.input_size = DISC_HIDDEN1_NEURONS;
+    discriminator->hidden2_layer.output_size = DISC_HIDDEN2_NEURONS;
+    discriminator->output_layer.input_size = DISC_HIDDEN2_NEURONS;
+    discriminator->output_layer.output_size = DISC_OUTPUT_NEURONS;
+}
+
+static int     init_generator(t_gen *generator)
 {
     init_generator_sizes(generator);
-
+    init_layer(&generator->hidden1_layer, HE);
+    init_layer(&generator->hidden2_layer, HE);
+    init_layer(&generator->output_layer, GLOROT);
     return (0);
 }
 
-int    init_discriminator(t_disc *discriminator)
+static int    init_discriminator(t_disc *discriminator)
 {
-
+    init_discriminator_sizes(discriminator);
+    init_layer(&discriminator->hidden1_layer, HE);
+    init_layer(&discriminator->hidden2_layer, HE);
+    init_layer(&discriminator->output_layer, GLOROT);
     return (0);
 }
 

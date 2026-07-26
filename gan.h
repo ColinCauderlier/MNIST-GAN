@@ -26,12 +26,14 @@ CONSTANTS
 # define DISC_HIDDEN1_NEURONS 256
 # define DISC_HIDDEN2_NEURONS 128
 # define DISC_OUTPUT_NEURONS 1
+# define DISC_NB_LAYERS 3
 
 //Generative model
 # define GEN_NOISE_INPUT 100
 # define GEN_HIDDEN1_NEURONS 128
 # define GEN_HIDDEN2_NEURONS 256
 # define GEN_OUTPUT_NEURONS 784
+# define GEN_NB_LAYERS 3
 
 //Paths to the dataset
 # define PATH_TRAINING_LABELS "../train-labels-idx1-ubyte/train-labels.idx1-ubyte"
@@ -73,6 +75,7 @@ typedef struct s_generator
     t_layer     hidden1_layer; //100 -> 128
     t_layer     hidden2_layer; //128 -> 256
     t_layer     output_layer;  //256 -> 784
+    t_fcache    cache;
 }                   t_gen;
 
 typedef struct s_discriminator
@@ -80,7 +83,22 @@ typedef struct s_discriminator
     t_layer     hidden1_layer; //784 -> 256
     t_layer     hidden2_layer; //256 -> 128
     t_layer     output_layer;  //128 -> 1
+    t_fcache    cache;
 }                   t_disc;
+
+typedef struct s_layer_cache
+{
+    float   *z;
+    float   *a;
+}					t_lcache;
+
+//Dynamic number of layers
+typedef struct s_forward_cache
+{
+    t_lcache    *sums;
+    int         nb_layers;
+    float       loss;
+}					t_fcache;
 
 /*
 FUNCTIONS

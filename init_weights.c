@@ -29,7 +29,7 @@ static float   get_random_weight_Glorot(t_layer *layer)
 /*
 Initialize the weights and biases of a full layer using the Glorot initialization
 */
-static void    init_weights_Glorot(t_layer *layer)
+void    init_weights_Glorot(t_layer *layer)
 {
     int input_index = 0;
     int output_index = 0;
@@ -56,7 +56,7 @@ static void    init_weights_Glorot(t_layer *layer)
 /*
 Initialize the weights and biases of a full layer using the He initialization
 */
-static void    init_weights_He(t_layer *layer)
+void    init_weights_He(t_layer *layer)
 {
     int input_index = 0;
     int output_index = 0;

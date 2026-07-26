@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -lm
 NAME    = gan
-SRCS    = main.c init.c init_layer.c free_layer_utils.c free.c
+SRCS    = main.c init.c init_layer.c init_weights.c free_layer_utils.c free.c
 OBJS    = $(SRCS:.c=.o)
 
 all: $(NAME)
